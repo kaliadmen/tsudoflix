@@ -1,7 +1,26 @@
 <?php
-    if(isset($_POST["submit"])) {
-        echo "Form was submitted";
+require_once("includes/config.php");
+require_once("includes/classes/FormSanitizer.php");
+require_once("includes/classes/Constants.php");
+require_once("includes/classes/Account.php");
+
+$account = new Account($db);
+
+if(isset($_POST["submit"])) {
+    $username = FormSanitizer::sanitize_username($_POST["username"]);
+    $password = FormSanitizer::sanitize_password($_POST["password"]);
+
+    $logged_in = $account->login($username, $password);
+
+    //make registered method
+    if($logged_in){
+        $_SESSION["user_logged_in"] = $username;
+        header("Location: index.php"); //make redirect function
+        exit();
     }
+
+}
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -22,6 +41,7 @@
                     <span>to continue to Tsudoflix</span>
                 </div>
                 <form method="POST">
+                    <?=$account->get_error(Constants::$login_failed)?>
                     <input type="text" name="username" placeholder="Username" required>
                     <input type="password" name="password" placeholder="Password" required>
                     <input type="submit" name="submit" value="SUBMIT">
