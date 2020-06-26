@@ -17,14 +17,20 @@
 
         $registered = $account->register($first_name, $last_name, $username, $email, $confirm_email, $password, $confirm_password);
 
-        //make registered method
-        if($registered){
+
+        if($registered) {
             $_SESSION["user_logged_in"] = $username;
             header("Location: index.php"); //make redirect function
         }
 
     }
 
+    function get_input_value(string $name) : string {
+        if(isset($_POST[$name])) {
+            return $_POST[$name];
+        }
+        return '';
+    }
 
 ?>
 <!doctype html>
@@ -47,19 +53,19 @@
                 </div>
                 <form method="POST">
                     <?=$account->get_error(Constants::$first_name_not_correct_length)?>
-                    <input type="text" name="first_name" placeholder="First name" required>
+                    <input type="text" name="first_name" placeholder="First name" value="<?=get_input_value("first_name");?>" required>
 
                     <?=$account->get_error(Constants::$last_name_not_correct_length)?>
-                    <input type="text" name="last_name" placeholder="Last name" required>
+                    <input type="text" name="last_name" placeholder="Last name" value="<?=get_input_value("last_name");?>" required>
 
                     <?=$account->get_error(Constants::$username_not_correct_length)?>
                     <?=$account->get_error(Constants::$username_taken)?>
-                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="text" name="username" placeholder="Username" value="<?=get_input_value("username");?>" required>
 
                     <?=$account->get_error(Constants::$email_does_not_match)?>
                     <?=$account->get_error(Constants::$email_not_valid)?>
                     <?=$account->get_error(Constants::$email_used)?>
-                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="email" name="email" placeholder="Email" value="<?=get_input_value("email");?>" required>
 
                     <input type="email" name="confirm_email" placeholder="Confirm email" required>
 
@@ -75,5 +81,8 @@
                 <a href="login.php" class="signInMessage">Already have an account? Sign in here!</a>
             </div>
         </div>
+        <script>
+            document.getElementsByClassName("errrorMessage")
+        </script>
     </body>
 </html>

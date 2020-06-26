@@ -12,15 +12,19 @@ if(isset($_POST["submit"])) {
 
     $logged_in = $account->login($username, $password);
 
-    //make registered method
     if($logged_in){
         $_SESSION["user_logged_in"] = $username;
         header("Location: index.php"); //make redirect function
         exit();
     }
-
 }
 
+    function get_input_value(string $name) : string {
+        if(isset($_POST[$name])) {
+            return $_POST[$name];
+        }
+        return '';
+    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -42,7 +46,7 @@ if(isset($_POST["submit"])) {
                 </div>
                 <form method="POST">
                     <?=$account->get_error(Constants::$login_failed)?>
-                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="text" name="username" placeholder="Username" value="<?=get_input_value("username"); ?>" required>
                     <input type="password" name="password" placeholder="Password" required>
                     <input type="submit" name="submit" value="SUBMIT">
                 </form>

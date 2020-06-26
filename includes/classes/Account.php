@@ -29,8 +29,8 @@
             $this->_validate_emails($email, $confirmed_email);
             $this->_validate_passwords($password, $confirmed_password);
 
-            if(empty($this->errorArray))
-                return $this->_insert_user_data($username, $first_name, $last_name, $email, $password);
+            if(empty($this->_error_array))
+                return $this->_insert_user_data($first_name, $last_name, $username, $email, $password);
 
             return false;
         }
@@ -69,7 +69,6 @@
             $query = $this->_connection->prepare("SELECT * FROM users WHERE username= :uname");
             $query->bindValue(":uname", $username);
             $query->execute();
-
             if($query->rowCount() != 0) {
                 array_push($this->_error_array, Constants::$username_taken);
                 return;
