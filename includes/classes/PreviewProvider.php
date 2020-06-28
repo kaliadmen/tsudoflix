@@ -19,9 +19,21 @@
             $preview = $entity->get_preview();
             $thumbnail = $entity->get_thumbnail();
 
+            //TODO: Add subtitle data
+
             return "<div class='previewContainer'>
-                    <img class=\"previewImage\" src='$thumbnail' alt=\"\" hidden>
-                    <video autoplay muted class=\"previewVideo\" src='$preview' type='video/mp4'></video>
+                    <img class='previewImage' src='$thumbnail' alt='' hidden>
+                    <video autoplay muted class='previewVideo' src='$preview' type='video/mp4' onended='previewEnded()'></video>
+                    <div class='previewOverlay'>
+                        <div class='mainDetails'>
+                            <h3>$name</h3>
+                
+                            <div class='buttons'>
+                               <button><i class='fas fa-play'></i> Play</button>
+                               <button onclick='volumeToggle(this)'><i class='fas fa-volume-mute'></i></button>
+                            </div>
+                        </div>
+                    </div>
                     </div>";
         }
 
