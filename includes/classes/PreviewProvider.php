@@ -37,13 +37,21 @@
                     </div>";
         }
 
+        public function create_entity_preview_container($entity) {
+            $id = $entity->get_id();
+            $name = $entity->get_name();
+            $thumbnail =$entity->get_thumbnail();
+
+            return "<a href='entity.php?id=$id'>
+                    <div class='previewContainer small'>
+                        <img src=\"$thumbnail\" alt='\"show image\" 'title='$name'>
+                    </div>
+                    </a>";
+        }
+
         private function _get_random_entity() : Entity {
-            $query = $this->_connection->prepare("SELECT * FROM entities ORDER BY RAND() LIMIT 1");
-            $query->execute();
+            $entity = EntityProvider::get_entities($this->_connection, (int) NULL,1);
 
-            $data = $query->fetch(PDO::FETCH_ASSOC);
-
-            return new Entity($this->_connection, $data);
-
+            return $entity[0];
         }
     }

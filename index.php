@@ -2,11 +2,11 @@
     require_once("includes/header.php");
 
     $preview = new PreviewProvider($db, $user_logged_in);
+    $containers = new CategoryContainer($db, $user_logged_in);
 ?>
 
     <?=$preview->create_preview_video(null)?>
-
-
+    <?=$containers->show_all_categories()?>
 
         </div>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"
