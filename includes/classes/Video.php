@@ -12,13 +12,18 @@
             is_array($data) ? $this->_data = $data : $this->_data_id = $data;
 
             if(isset($this->_data_id)) {
-                $query = $this->_connection->prepare("SELECT * FROM entities WHERE id= :id");
+                $query = $this->_connection->prepare("SELECT * FROM videos WHERE id= :id");
                 $query->bindValue(":id", $data);
                 $query->execute();
                 $this->_data = $query->fetch(PDO::FETCH_ASSOC);
             }
-
             $this->_entity = new Entity($connection, $this->_data["entity_id"]);
+        }
+
+        public function increment_view_count() {
+            $query = $this->_connection->prepare("UPDATE videos SET views = views + 1 WHERE id = :id");
+            $query->bindValue(":id", $this->get_id());
+            $query->execute();
         }
 
         public function get_id() : string {
