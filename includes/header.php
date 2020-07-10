@@ -24,6 +24,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="stylesheet" type="text/css" href="assets/style/style.css" />
         <title>Welcome to Tsudoflix</title>
+        <script src="assets/js/script.js"></script>
     </head>
     <body>
         <div class="wrapper">
