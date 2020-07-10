@@ -103,6 +103,7 @@ a {
     text-decoration: none;
 }
 
+/*Errors*/
 .errorMessage {
     color: red;
     -moz-animation: errorAnimation 0s ease-in 6s forwards;
@@ -129,6 +130,15 @@ a {
         height:0;
         visibility:hidden;
     }
+}
+
+.errorBanner {
+    color: #fff;
+    position: absolute;
+    top: 35%;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
 }
 
 /*Video Preview*/
@@ -209,8 +219,15 @@ button i {
     flex-direction: column;
     padding: 10px 0;
 }
+.previewCategories {
+    padding: 0 50px;
+}
 
-.entities {
+.previewCategories.noScroll .entities{
+    white-space: normal;
+}
+
+.entities, .videos {
     overflow-y: auto;
     overflow-y: hidden;
     white-space: nowrap;
@@ -241,3 +258,42 @@ button i {
     height: 0;
     width: 0;
 }
+
+/*Seasons*/
+.season {
+   display: flex;
+    flex-direction: column;
+    padding: 10px 50px;
+}
+
+.episodeContainer {
+    display: inline-flex;
+    justify-content: center;
+    margin-right: 4px;
+
+}
+
+.episodeContainer .contents {
+    display: flex;
+    flex-direction: column;
+    width: 230px;
+}
+
+.episodeContainer img {
+    width: 230px;
+    height: 129px;
+    object-fit: cover;
+}
+
+.episodeContainer .videoInfo h4,
+.episodeContainer .videoInfo span {
+    color: #fff;
+    width: 100%;
+    white-space: normal;
+}
+
+.episodeContainer .videoInfo {
+    max-height: 200px;
+    overflow-y: auto;
+}
+

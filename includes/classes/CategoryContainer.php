@@ -59,6 +59,19 @@
 
         return $html."</div>";
     }
-    
-    
+
+        public function show_category(int $cat_id, string $title = "") : string {
+            $query = $this->_connection->prepare("SELECT * FROM categories WHERE id = :id");
+            $query->bindValue(":id", $cat_id);
+            $query->execute();
+
+            $html = "<div class='previewCategories noScroll'>";
+
+            while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                $html .= $this->_get_category_html($row, $title, true, true);
+
+            }
+
+            return $html."</div>";
+    }
 }
