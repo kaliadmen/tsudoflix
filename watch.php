@@ -18,12 +18,12 @@
         </button>
         <h1><?=$video->get_title()?></h1>
     </div>
-    <video controls autoplay src="<?=$video->get_file_path()?>" type="video/mp4">
+    <video controls  autoplay src="<?=$video->get_file_path()?>" type="video/mp4" controlsList="nodownload" disablePictureInPicture>
 
     </video>
 </div>
 
 <script>
-    initVideo();
+    initVideo("<?=$video->get_id();?>", "<?=sha1($user_logged_in);?>");
 </script>
 <?php require_once("includes/footer.php"); ?>

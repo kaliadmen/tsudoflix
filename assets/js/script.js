@@ -40,6 +40,104 @@ function startHideTimer() {
     };
 }
 
-    function initVideo() {
-        startHideTimer();
+function initVideo(videoId, username) {
+    startHideTimer();
+    setStartTime(videoId, username);
+    updateProgressTimer(videoId, username);
+
+}
+
+function updateProgressTimer(videoId, username) {
+    addDuration(videoId, username);
+
+    let timer;
+    const video = document.querySelector("video");
+
+    video.onplaying = function(event) {
+        window.clearInterval(timer);
+        timer = window.setInterval(function () {
+            updateProgress(videoId, username, event.target.currentTime);
+        }, 3000);
+    };
+
+    video.onpause = function () {
+        window.clearInterval(timer);
+    };
+
+    video.onended = function() {
+        setFinished(videoId, username);
+        window.clearInterval(timer);
     }
+
+}
+
+function addDuration(videoId, username) {
+    //call formData constructor to get PHP data
+    const formData = new FormData();
+    //pass our key/value pairs to constructor
+    formData.append("videoId", videoId);
+    formData.append("username", username);
+
+    if (formData !== "") {
+        fetch("ajax/add_duration.php", {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => response.text())
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+}
+
+function updateProgress(videoId, username, progress) {
+
+    const formData = new FormData();
+
+    formData.append("videoId", videoId);
+    formData.append("username", username);
+    formData.append("progress", progress);
+
+    if (formData !== "") {
+        fetch("ajax/update_duration.php", {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => response.text())
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+}
+
+function setFinished(videoId, username) {
+
+    const formData = new FormData();
+
+    formData.append("videoId", videoId);
+    formData.append("username", username);
+
+    if (formData !== "") {
+        fetch("ajax/set_finished.php", {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => response.text())
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+}
+
+function setStartTime(videoId, username) {
+    $.post("ajax/get_progress.php", {videoId, username}, (data) => {
+        if(isNaN(data)) {
+            alert(data);
+        }
+        video = $("video");
+        video.on("play", (event) => {
+            video[0].currentTime = data;
+            video.off("play")
+        })
+    });
+}
