@@ -9,6 +9,8 @@
 
     $video = new Video($db, $id);
     $video->increment_view_count();
+
+    $up_next_video = VideoProvider::get_up_next_video($db, $video);
 ?>
 
 <div class="watchContainer">
@@ -18,8 +20,18 @@
         </button>
         <h1><?=$video->get_title()?></h1>
     </div>
-    <video controls  autoplay src="<?=$video->get_file_path()?>" type="video/mp4" controlsList="nodownload" disablePictureInPicture>
 
+    <div class="videoControls upNext">
+        <button><i class="fas fa-redo"></i></button>
+
+        <div class="upNextContainer">
+            <h2>Up next: </h2>
+            <h3><?=$up_next_video->get_title() ?></h3>
+        </div>
+    </div>
+
+    <video controls  autoplay controlsList="nodownload" disablePictureInPicture>
+        <source src="<?=$video->get_file_path()?>" type="video/mp4">
     </video>
 </div>
 

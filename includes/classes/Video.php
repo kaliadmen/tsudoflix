@@ -49,4 +49,12 @@
         public function get_episode_number() : string {
             return $this->_data["episode"];
         }
+
+        public function get_entity_id() : string {
+            return $this->_data["entity_id"];
+        }
+
+        public function get_season_number() : string  {
+            return $this->_data["season"];
+        }
     }
