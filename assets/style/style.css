@@ -187,7 +187,12 @@ a {
     color: #fff;
     font-size: 2.5rem;
     margin: 0.9375rem 0;
+}
 
+.previewOverlay .mainDetails h4 {
+    color: #fff;
+    font-size: 1.25rem;
+    margin: 0.9375rem 0;
 }
 
 .mainDetails button {
@@ -277,6 +282,15 @@ button i {
     display: flex;
     flex-direction: column;
     width: 230px;
+    position: relative;
+}
+
+.seen {
+    color: #ccb029;
+    font-size: 26px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
 }
 
 .episodeContainer img {
@@ -325,7 +339,31 @@ button i {
     outline:none;
 }
 
+.videoControls button:hover {
+    cursor: pointer;
+}
+
+.watchNav {
+    z-index: 2;
+}
+
 .watchNav.active {
     opacity: 0;
     transition: opacity 2s;
 }
+
+/*Up Next Overlay */
+.upNext {
+    height: 110%;
+    justify-content: center;
+}
+
+.upNextContainer button {
+    padding: 0;
+}
+
+.upNextContainer h2,
+.upNextContainer h3 {
+    color: #fff;
+}
+

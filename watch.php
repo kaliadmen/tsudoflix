@@ -10,7 +10,23 @@
     $video = new Video($db, $id);
     $video->increment_view_count();
 
-    $up_next_video = VideoProvider::get_up_next_video($db, $video);
+    if(!$video->is_movie()) {
+        $up_next_video = VideoProvider::get_up_next_video($db, $video);
+
+        $up_next_overlay = '<div id="upNext" class="videoControls upNext" style="display: none">
+        <button onclick="restartVideo()"><i class="fas fa-redo"></i></button>
+
+        <div class="upNextContainer">
+            <h2>Up next: </h2>
+            <h3><?=$up_next_video->get_title()?></h3>
+            <h3><?=$up_next_video->get_season_and_episode()?></h3>
+
+            <button class="playNext" onclick="watchVideo(<?=$up_next_video->get_id()?>)">
+                <i class="fas fa-play"></i> Play
+            </button>
+        </div>
+    </div>';
+    }
 ?>
 
 <div class="watchContainer">
@@ -21,14 +37,8 @@
         <h1><?=$video->get_title()?></h1>
     </div>
 
-    <div class="videoControls upNext">
-        <button><i class="fas fa-redo"></i></button>
 
-        <div class="upNextContainer">
-            <h2>Up next: </h2>
-            <h3><?=$up_next_video->get_title() ?></h3>
-        </div>
-    </div>
+    <?=$up_next_overlay?>
 
     <video controls  autoplay controlsList="nodownload" disablePictureInPicture>
         <source src="<?=$video->get_file_path()?>" type="video/mp4">

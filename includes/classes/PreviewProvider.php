@@ -19,7 +19,14 @@
             $preview = $entity->get_preview();
             $thumbnail = $entity->get_thumbnail();
 
-            //TODO: Add subtitle data
+            $video_id = VideoProvider::get_entity_video_for_user($this->_connection, $id, sha1($this->_username));
+            $video = new Video($this->_connection, $video_id);
+
+            $in_progress = $video->is_in_progress($this->_username);
+            $play_button_text = $in_progress ? "Continue Watching" : "Play";
+
+            $season_episode = $video->get_season_and_episode();
+            $subtitle = $video->is_movie() ? "" : "<h4>$season_episode</h4>";
 
             return "<div class='previewContainer'>
                     <img class='previewImage' src='$thumbnail' alt='' hidden>
@@ -27,9 +34,9 @@
                     <div class='previewOverlay'>
                         <div class='mainDetails'>
                             <h3>$name</h3>
-                
+                            $subtitle
                             <div class='buttons'>
-                               <button><i class='fas fa-play'></i> Play</button>
+                               <button onclick='watchVideo($video_id)'><i class='fas fa-play'></i> $play_button_text</button>
                                <button onclick='volumeToggle(this)'><i class='fas fa-volume-mute vol'></i></button>
                             </div>
                         </div>

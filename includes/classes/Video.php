@@ -20,10 +20,38 @@
             $this->_entity = new Entity($connection, $this->_data["entity_id"]);
         }
 
-        public function increment_view_count() {
+        public function increment_view_count() : void {
             $query = $this->_connection->prepare("UPDATE videos SET views = views + 1 WHERE id = :id");
             $query->bindValue(":id", $this->get_id());
             $query->execute();
+        }
+
+        public function is_movie() : bool {
+            return  $this->_data["is_movie"];
+        }
+
+        public function is_in_progress(string &$username)  : bool {
+            $query = $this->_connection->prepare("SELECT * FROM video_progress 
+                WHERE video_id = :videoId AND username = :username AND finished = 0");
+
+            $query->bindValue(":videoId", $this->get_id());
+            $query->bindValue(":username", sha1($username));
+
+            $query->execute();
+
+            return $query->rowCount() != 0;
+        }
+
+        public function have_seen($username) : bool {
+            $query = $this->_connection->prepare("SELECT * FROM video_progress 
+                WHERE video_id = :videoId AND username = :username AND finished = 1");
+
+            $query->bindValue(":videoId", $this->get_id());
+            $query->bindValue(":username", sha1($username));
+
+            $query->execute();
+
+            return $query->rowCount() != 0;
         }
 
         public function get_id() : string {
@@ -56,5 +84,16 @@
 
         public function get_season_number() : string  {
             return $this->_data["season"];
+        }
+
+        public function get_season_and_episode() : string {
+            if($this->is_movie()) {
+                return "";
+            }
+
+            $season = $this->get_season_number();
+            $episode = $this->get_episode_number();
+
+            return "Season {$season}, Episode {$episode}";
         }
     }

@@ -67,6 +67,7 @@ function updateProgressTimer(videoId, username) {
     video.onended = function() {
         setFinished(videoId, username);
         window.clearInterval(timer);
+        showUpNextVideo();
     }
 
 }
@@ -134,10 +135,30 @@ function setStartTime(videoId, username) {
         if(isNaN(data)) {
             alert(data);
         }
-        video = $("video");
+        const video = $("video");
+
         video.on("play", (event) => {
             video[0].currentTime = data;
             video.off("play")
         })
     });
+}
+
+function restartVideo() {
+    const video = document.querySelector("video");
+
+
+    video.currentTime = 0;
+    video.play();
+
+    $(".upNext").fadeOut();
+
+}
+
+function showUpNextVideo() {
+    $(".upNext").fadeIn();
+}
+
+function watchVideo(videoId) {
+    window.location.href = `watch.php?id=${videoId}`
 }
