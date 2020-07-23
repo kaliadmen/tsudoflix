@@ -1,3 +1,22 @@
+window.onscroll = function() {
+    const navBar = document.querySelector(".topBar");
+    if (navBar) {
+        navBarStickyOnScroll();
+    }
+}
+
+function navBarStickyOnScroll() {
+    const navBar = document.querySelector(".topBar");
+    const sticky = navBar.offsetTop + 100;
+
+    if (window.pageYOffset <= sticky) {
+        navBar.classList.remove("scrolled");
+    }
+    else {
+        navBar.classList.add("scrolled");
+    }
+}
+
 function volumeToggle(button) {
     //when you click the button it always does the opposite of what is currently set
     const toggleMute = document.querySelector(".previewVideo").muted = !document.querySelector(".previewVideo").muted;

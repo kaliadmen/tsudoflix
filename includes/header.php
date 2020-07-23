@@ -32,4 +32,9 @@
     </head>
     <body>
         <div class="wrapper">
+            <?php
+                if(!isset($hide_nav)) {
+                    include_once("includes/navbar.php");
+                }
+            ?>
 
