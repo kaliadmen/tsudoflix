@@ -44,7 +44,27 @@
                     </div>";
         }
 
-        public function create_entity_preview_container($entity) {
+        public function create_tv_show_preview_video() : string {
+            $entities_array = EntityProvider::get_tv_show_entities($this->_connection, (int) NULL,1);
+
+            if(sizeof($entities_array) == 0) {
+                ErrorMessage::show_error("No TV shows to display");
+            }
+
+            return $this->create_preview_video($entities_array[0]);
+        }
+
+        public function create_movie_preview_video() : string {
+            $entities_array = EntityProvider::get_movies_entities($this->_connection, (int) NULL,1);
+
+            if(sizeof($entities_array) == 0) {
+                ErrorMessage::show_error("No movies to display");
+            }
+
+            return $this->create_preview_video($entities_array[0]);
+        }
+
+        public function create_entity_preview_container($entity) : string {
             $id = $entity->get_id();
             $name = $entity->get_name();
             $thumbnail =$entity->get_thumbnail();

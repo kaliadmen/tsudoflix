@@ -28,7 +28,7 @@
             return new Video($connection, $row);
         }
 
-        public static function get_entity_video_for_user(PDO $connection, int $entity_id, string $username)  {
+        public static function get_entity_video_for_user(PDO $connection, int $entity_id, string $username) : int {
             $query = $connection->prepare(
                 "SELECT video_id FROM video_progress 
                         INNER JOIN videos 

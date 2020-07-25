@@ -18,10 +18,10 @@
             $entites = EntityProvider::get_entities($this->_connection, $cat_id, 20);
         }
         else if($tv_shows) {
-            //get tv shows
+            $entites = EntityProvider::get_tv_show_entities($this->_connection, $cat_id, 20);
         }
         else {
-            //get movies
+            $entites = EntityProvider::get_movies_entities($this->_connection, $cat_id, 20);
         }
 
         if(empty($entites)) {
@@ -60,7 +60,37 @@
         return $html."</div>";
     }
 
-        public function show_category(int $cat_id, string $title = "") : string {
+    public function show_tv_shows_categories() : string {
+        $query = $this->_connection->prepare("SELECT * FROM categories");
+        $query->execute();
+
+        $html = "<div class='previewCategories'>
+                    <h1>TV Shows</h1>";
+
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            $html .= $this->_get_category_html($row, "", true, false);
+
+        }
+
+        return $html."</div>";
+    }
+
+        public function show_movies_categories() : string {
+            $query = $this->_connection->prepare("SELECT * FROM categories");
+            $query->execute();
+
+            $html = "<div class='previewCategories'>
+                    <h1>Movies</h1>";
+
+            while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                $html .= $this->_get_category_html($row, "", false, true);
+
+            }
+
+            return $html."</div>";
+        }
+
+    public function show_category(int $cat_id, string $title = "") : string {
             $query = $this->_connection->prepare("SELECT * FROM categories WHERE id = :id");
             $query->bindValue(":id", $cat_id);
             $query->execute();

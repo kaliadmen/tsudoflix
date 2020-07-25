@@ -3,11 +3,11 @@ window.onscroll = function() {
     if (navBar) {
         navBarStickyOnScroll();
     }
-}
+};
 
 function navBarStickyOnScroll() {
     const navBar = document.querySelector(".topBar");
-    const sticky = navBar.offsetTop + 100;
+    const sticky = navBar.offsetTop;
 
     if (window.pageYOffset <= sticky) {
         navBar.classList.remove("scrolled");
@@ -155,7 +155,7 @@ function setStartTime(videoId, username) {
             alert(data);
         }
         const video = $("video");
-
+        video[0].play();
         video.on("play", (event) => {
             video[0].currentTime = data;
             video.off("play")

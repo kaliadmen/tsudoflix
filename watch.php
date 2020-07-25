@@ -11,22 +11,27 @@
     $video = new Video($db, $id);
     $video->increment_view_count();
 
+    $up_next_overlay = "";
+
     if(!$video->is_movie()) {
         $up_next_video = VideoProvider::get_up_next_video($db, $video);
+        $video_id = $up_next_video->get_id();
+        $video_title = $up_next_video->get_title();
+        $video_season_and_episode = $up_next_video->get_season_and_episode();
 
-        $up_next_overlay = '<div id="upNext" class="videoControls upNext" style="display: none">
-        <button onclick="restartVideo()"><i class="fas fa-redo"></i></button>
+        $up_next_overlay = "<div id='upNext' class='videoControls upNext' style='display: none'>
+        <button onclick='restartVideo()'><i class='fas fa-redo'></i></button>
 
-        <div class="upNextContainer">
+        <div class='upNextContainer'>
             <h2>Up next: </h2>
-            <h3><?=$up_next_video->get_title()?></h3>
-            <h3><?=$up_next_video->get_season_and_episode()?></h3>
+            <h3>$video_title</h3>
+            <h3>$video_season_and_episode</h3>
 
-            <button class="playNext" onclick="watchVideo(<?=$up_next_video->get_id()?>)">
-                <i class="fas fa-play"></i> Play
+            <button class='playNext' onclick='watchVideo($video_id)'>
+                <i class='fas fa-play'></i> Play
             </button>
         </div>
-    </div>';
+    </div>";
     }
 ?>
 
@@ -41,7 +46,7 @@
 
     <?=$up_next_overlay?>
 
-    <video controls  autoplay controlsList="nodownload" disablePictureInPicture>
+    <video controls controlsList="nodownload" disablePictureInPicture>
         <source src="<?=$video->get_file_path()?>" type="video/mp4">
     </video>
 </div>
