@@ -87,4 +87,22 @@
             return $result;
         }
 
+        public static function get_search_entities(PDO $connection, string $search) : array {
+            $sql = "SELECT * FROM entities WHERE name LIKE CONCAT('%' :search '%') LIMIT 20";
+
+            $query = $connection->prepare($sql);
+
+            $query->bindValue(":search", $search);
+
+            $query->execute();
+
+            $result = [];
+
+            while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                $result[] = new Entity($connection, $row);
+            }
+
+            return $result;
+        }
+
     }

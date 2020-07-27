@@ -8,7 +8,7 @@
         <li><a href="movies.php">Movies</a></li>
     </ul>
     <div class="rightItems">
-        <a href="seatch.php">
+        <a href="search.php">
             <i class="fas fa-search"></i>
         </a>
         <a href="profile.php">

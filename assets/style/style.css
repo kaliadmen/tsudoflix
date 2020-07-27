@@ -420,3 +420,47 @@ button i {
     color: #fff;
 }
 
+/*Search */
+.textboxContainer {
+    padding: 100px 50px;
+}
+
+.searchInput {
+    height: 50px;
+    width: 600px;
+    border: 1px solid #dedede;
+    border-radius: 3px;
+    background-color: transparent;
+    color: #fff;
+    font-size: 20px;
+    padding: 5px 10px;
+}
+
+/*allows transparent background override of chrome user agent styles*/
+@-webkit-keyframes autofill {
+    to {
+        color: #fff;
+        background: transparent;
+    }
+}
+
+input:-webkit-autofill {
+    -webkit-animation-name: autofill;
+    -webkit-animation-fill-mode: both;
+}
+
+input::placeholder {
+    color: #fff;
+}
+
+/* Mozilla Firefox 4 to 18 */
+:-moz-placeholder {
+    color:    #fff;
+    opacity:  1;
+}
+
+/* Mozilla Firefox 19+ */
+::-moz-placeholder {
+    color:    #fff;
+    opacity:  1;
+}
