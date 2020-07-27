@@ -64,6 +64,16 @@
             return $this->create_preview_video($entities_array[0]);
         }
 
+        public function create_category_preview_video(int $category_id) : string {
+            $entities_array = EntityProvider::get_entities($this->_connection, $category_id ,1);
+
+            if(sizeof($entities_array) == 0) {
+                ErrorMessage::show_error("No shows to display");
+            }
+
+            return $this->create_preview_video($entities_array[0]);
+        }
+
         public function create_entity_preview_container($entity) : string {
             $id = $entity->get_id();
             $name = $entity->get_name();
