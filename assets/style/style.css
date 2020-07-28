@@ -61,6 +61,12 @@ a {
     margin: 0.625rem 0;
     border: none;
     border-bottom: 1px solid #dedede;
+
+}
+
+form input::placeholder {
+    color: #333333;
+    opacity: .5;
 }
 
 .column form input[type="submit"] {
@@ -463,4 +469,65 @@ input::placeholder {
 ::-moz-placeholder {
     color:    #fff;
     opacity:  1;
+}
+
+/*Profile Page*/
+.settingsContainer {
+    padding-top: 60px;
+    background-color: transparent;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.settingsContainer h2 {
+    color: #fff;
+}
+
+.settingsContainer .formSection {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+    border-bottom: 1px solid #dedede;
+    padding-bottom: 20px;
+}
+
+.settingsContainer form input[type="text"],
+.settingsContainer form input[type="password"],
+.settingsContainer form input[type="email"]{
+    width: 300px;
+    height: 40px;
+    font-size: 15px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 3px;
+    padding: 0 5px;
+}
+
+.settingsContainer form input[type="submit"] {
+    background-color: #dc1928;
+    width: 100px;
+    height: 40px;
+}
+
+.alertSuccess,
+.alertError {
+    margin: 10px 0;
+    -moz-animation: errorAnimation 0s ease-in 6s forwards;
+    /* Firefox */
+    -webkit-animation: errorAnimation 0s ease-in 6s forwards;
+    /* Safari and Chrome */
+    -o-animation: errorAnimation 0s ease-in 6s forwards;
+    /* Opera */
+    animation: errorAnimation 0s ease-in 6s forwards;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+}
+
+.alertError {
+    color: #dc1928;
+}
+
+.alertSuccess {
+    color: #2ecc71;
 }

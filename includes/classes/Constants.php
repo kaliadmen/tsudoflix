@@ -13,6 +13,6 @@ class Constants {
     public static string $username_not_correct_length = "Your username must be between 5 and 25 characters";
     public static string $username_taken = "Your username is already in use";
 
-    public static $login_failed = "Login Failed! Username or Password was incorrect";
+    public static string $login_failed = "Login Failed! Username or Password was incorrect";
 
 }

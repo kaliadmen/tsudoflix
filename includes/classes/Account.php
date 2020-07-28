@@ -9,7 +9,7 @@
         }
 
         public function login($username, $password) : bool {
-            $query = $this->_connection->prepare("SELECT * FROM users WHERE username= ?");
+            $query = $this->_connection->prepare("SELECT * FROM users WHERE username = ?");
             $query->execute([$username]);
 
             if ($query->rowCount() == 1) {
@@ -22,7 +22,7 @@
             return false;
         }
 
-        public function register($first_name, $last_name, $username, $email, $confirmed_email, $password, $confirmed_password) : bool {
+        public function register(string $first_name, string $last_name, string $username, string $email, string $confirmed_email, string $password, string $confirmed_password) : bool {
             $this->_validate_firstname($first_name);
             $this->_validate_lastname($last_name);
             $this->_validate_username($username);
@@ -35,29 +35,40 @@
             return false;
         }
 
-        private function _insert_user_data($first_name, $last_name, $username, $email, $password) : bool {
-            $hashed_password = password_hash($password, PASSWORD_BCRYPT, array(
-            'cost' => '12'));
+        public function update_details(string $first_name, string $last_name, string $email, string $username) : bool {
+            $this->_validate_firstname($first_name);
+            $this->_validate_lastname($last_name);
+            $this->_validate_new_email($email, $username);
 
-            $query = $this->_connection->prepare(
-                "INSERT INTO users (first_name, last_name, username, email, password)
-                          VALUES (:fname, :lname, :uname, :eaddress, :pw)");
+            if(empty($this->_error_array)) {
+                $query = $this->_connection->prepare("UPDATE users 
+                    SET first_name = :fname, last_name = :lname, email = :eaddress 
+                    WHERE username = :uname");
 
-            $query->bindValue(":fname", $first_name);
-            $query->bindValue(":lname", $last_name);
-            $query->bindValue(":uname", $username);
-            $query->bindValue(":eaddress", $email);
-            $query->bindValue(":pw", $hashed_password);
+                $query->bindValue("fname", $first_name);
+                $query->bindValue("lname", $last_name);
+                $query->bindValue("eaddress", $email);
+                $query->bindValue("uname", $username);
 
-            return $query->execute();
+                return $query->execute();
+            }
+
+            return false;
+
         }
 
-        public function get_error($error) : string{
+        public function get_error(string $error) : string{
             if(!in_array($error, $this->_error_array)){
                 $error = "";
             }
 
             return "<span class='errorMessage'>$error</span>";
+        }
+
+        public function get_first_error() : string {
+            if(!empty($this->_error_array)) {
+                return $this->_error_array[0];
+            }
         }
 
         private function _validate_username(string $username) : void {
@@ -112,6 +123,25 @@
 
         }
 
+        private function _validate_new_email(string $email,  string $username) : void {
+            if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+                array_push($this->_error_array, Constants::$email_not_valid);
+                return;
+            }
+
+            $query = $this->_connection->prepare("SELECT * FROM users WHERE email= :eaddress AND username != :uname");
+            $query->bindValue(":eaddress", $email);
+            $query->bindValue(":uname", $username);
+            $query->execute();
+
+            if($query->rowCount() != 0){
+                array_push($this->_error_array, Constants::$email_used);
+                return;
+            }
+
+
+        }
+
         private function _validate_passwords(string $password_1,  string $password_2) : void {
             if($password_1 !== $password_2){
                 array_push($this->_error_array, Constants::$passwords_do_not_match);
@@ -127,6 +157,26 @@
                 array_push($this->_error_array, Constants::$password_has_invalid_characters);
                 return;
             }
+        }
+
+        private function _insert_user_data($first_name, $last_name, $username, $email, $password) : bool {
+            $hashed_password = password_hash($password, PASSWORD_BCRYPT, array(
+                'cost' => '12'));
+
+            $query = $this->_connection->prepare(
+                "INSERT INTO users (username, password, email, last_name, first_name)
+                          VALUES (:fname, :lname, :uname, :eaddress, :pw)");
+
+            $query->bindValue(":uname", $username);
+            $query->bindValue(":pw", $hashed_password);
+            $query->bindValue(":eaddress", $email);
+            $query->bindValue(":lname", $last_name);
+            $query->bindValue(":fname", $first_name);
+
+
+
+
+            return $query->execute();
         }
 
 

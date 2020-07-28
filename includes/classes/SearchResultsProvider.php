@@ -9,6 +9,15 @@
             $this->_username = $username;
         }
 
+        public function get_results(string $search_text) : string {
+            $entities = EntityProvider::get_search_entities($this->_connection,$search_text);
+
+            $html = "<div class='previewCategories noScroll'>";
+            $html .= $this->get_results_html($entities);
+
+            return $html."</div>";
+        }
+
         private function get_results_html($entities) : string {
             if(empty($entities)) {
                 return "";
@@ -26,14 +35,5 @@
                         $entities_html
                     </div>
                 </div>";
-        }
-
-        public function get_results(string $search_text) : string {
-            $entities = EntityProvider::get_search_entities($this->_connection,$search_text);
-
-            $html = "<div class='previewCategories noScroll'>";
-            $html .= $this->get_results_html($entities);
-
-            return $html."</div>";
         }
     }

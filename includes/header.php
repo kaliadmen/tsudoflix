@@ -1,5 +1,6 @@
 <?php
     require_once("includes/config.php");
+    require_once("includes/classes/User.php");
     require_once("includes/classes/PreviewProvider.php");
     require_once("includes/classes/EntityProvider.php");
     require_once("includes/classes/SeasonProvider.php");
