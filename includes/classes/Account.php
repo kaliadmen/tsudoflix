@@ -45,16 +45,35 @@
                     SET first_name = :fname, last_name = :lname, email = :eaddress 
                     WHERE username = :uname");
 
-                $query->bindValue("fname", $first_name);
-                $query->bindValue("lname", $last_name);
-                $query->bindValue("eaddress", $email);
-                $query->bindValue("uname", $username);
+                $query->bindValue(":fname", $first_name);
+                $query->bindValue(":lname", $last_name);
+                $query->bindValue(":eaddress", $email);
+                $query->bindValue(":uname", $username);
 
                 return $query->execute();
             }
 
             return false;
 
+        }
+
+        public function update_password(string $current_password, string $new_password, string $confirm_password, string $username) : bool {
+            $this->_validate_current_password($current_password, $username);
+            $this->_validate_passwords($new_password, $confirm_password);
+
+            if(empty($this->_error_array)) {
+                $hashed_password = password_hash($new_password, PASSWORD_BCRYPT, array(
+                    'cost' => '12'));
+
+                $query = $this->_connection->prepare("UPDATE users SET password = :pw WHERE username = :uname");
+
+                $query->bindValue(":pw", $hashed_password);
+                $query->bindValue(":uname", $username);
+
+                return $query->execute();
+            }
+
+            return false;
         }
 
         public function get_error(string $error) : string{
@@ -159,6 +178,18 @@
             }
         }
 
+        private function _validate_current_password(string $current_password, string $username) : void {
+            $query = $this->_connection->prepare("SELECT * FROM users WHERE username = ?");
+            $query->execute([$username]);
+
+            if ($query->rowCount() == 1) {
+                $results = $query->fetch(PDO::FETCH_ASSOC);
+                if (!password_verify($current_password, $results['password'])) {
+                    array_push($this->_error_array, Constants::$password_incorrect);
+                }
+            }
+        }
+
         private function _insert_user_data($first_name, $last_name, $username, $email, $password) : bool {
             $hashed_password = password_hash($password, PASSWORD_BCRYPT, array(
                 'cost' => '12'));
@@ -178,6 +209,4 @@
 
             return $query->execute();
         }
-
-
     }

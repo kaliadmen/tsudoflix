@@ -3,6 +3,7 @@
 class Constants {
 
     public static string $passwords_do_not_match = "Your passwords do not match";
+    public static string $password_incorrect = "Your current password is incorrect";
     public static string $password_not_correct_length = "Your password must be between 8 and 30 characters";
     public static string $password_has_invalid_characters = "Your password may only contain letters and numbers";
     public static string $email_not_valid = "Please enter a valid email address";

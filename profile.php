@@ -11,6 +11,7 @@
     $user_email = isset($_POST["email"]) ? $_POST["email"] : $user->get_email();
 
     $details_message = "";
+    $password_message = "";
 
     if(isset($_POST["save_details"])) {
         $account = new Account($db);
@@ -26,6 +27,24 @@
             $error_message = $account->get_first_error();
 
             $details_message = "<div class='alertError'>$error_message</div>";
+        }
+
+    }
+
+    if(isset($_POST["save_password"])) {
+        $account = new Account($db);
+
+        $current_password = FormSanitizer::sanitize_password($_POST["current_password"]);
+        $new_password = FormSanitizer::sanitize_password($_POST["new_password"]);
+        $confirm_password = FormSanitizer::sanitize_password($_POST["confirm_password"]);
+
+        if($account->update_password($current_password, $new_password, $confirm_password, $user_logged_in)) {
+            $password_message = "<div class='alertSuccess'>Password updated successfully!</div>";
+        }
+        else {
+            $password_error_message = $account->get_first_error();
+
+            $password_message = "<div class='alertError'>$password_error_message</div>";
         }
 
     }
@@ -52,6 +71,10 @@
             <input type="password" name="current_password" placeholder="Current password">
             <input type="password" name="new_password" placeholder="New password">
             <input type="password" name="confirm_password" placeholder="Confirm new password">
+
+            <div class="message">
+                <?=$password_message?>
+            </div>
 
             <input type="submit" name="save_password" value="Save">
         </form>
