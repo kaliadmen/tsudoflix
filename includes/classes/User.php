@@ -26,6 +26,10 @@
             return $this->sql_data["username"];
         }
 
+        public function get_is_subscribed() : bool {
+            return $this->sql_data["is_subscribed"];
+        }
+
         public function get_email() : string {
             return $this->sql_data["email"];
         }

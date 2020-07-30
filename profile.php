@@ -1,5 +1,6 @@
 <?php
     require_once("includes/header.php");
+    require_once("includes/paypal_config.php");
     require_once("includes/classes/Account.php");
     require_once("includes/classes/Constants.php");
     require_once("includes/classes/FormSanitizer.php");
@@ -48,6 +49,27 @@
         }
 
     }
+
+    if (isset($_GET['success']) && $_GET['success'] == 'true') {
+        $token = $_GET['token'];
+        $agreement = new \PayPal\Api\Agreement();
+
+        try {
+            // Execute agreement
+            $agreement->execute($token, $apiContext);
+
+            // Update user's account data
+
+        } catch (PayPal\Exception\PayPalConnectionException $ex) {
+            echo $ex->getCode();
+            echo $ex->getData();
+            die($ex);
+        } catch (Exception $ex) {
+            die($ex);
+        }
+    } else if (isset($_GET['success']) && $_GET['success'] == 'false') {
+        // Give error message
+    }
 ?>
 
 <div class="settingsContainer column">
@@ -78,6 +100,18 @@
 
             <input type="submit" name="save_password" value="Save">
         </form>
+    </div>
+
+    <div class="formSection">
+            <h2>Subscription</h2>
+            <?php
+                if($user->get_is_subscribed()) {
+                    echo "<h3>You are subscribed! Go to PayPal to cancel.</h3>";
+                }
+                else {
+                    echo "<a href='billing.php'>Subscribe to Tsudoflix</a>";
+                }
+            ?>
     </div>
 </div>
 
