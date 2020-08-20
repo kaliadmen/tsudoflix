@@ -2,6 +2,7 @@
     require_once("includes/header.php");
     require_once("includes/paypal_config.php");
     require_once("includes/classes/Account.php");
+    require_once("includes/classes/BillingDetails.php");
     require_once("includes/classes/Constants.php");
     require_once("includes/classes/FormSanitizer.php");
 
@@ -13,6 +14,7 @@
 
     $details_message = "";
     $password_message = "";
+    $subscription_message = "";
 
     if(isset($_POST["save_details"])) {
         $account = new Account($db);
@@ -54,11 +56,19 @@
         $token = $_GET['token'];
         $agreement = new \PayPal\Api\Agreement();
 
+        $subscription_message = "<div class='alertError'>Something went wrong</div>";
+
         try {
             // Execute agreement
             $agreement->execute($token, $apiContext);
 
-            // Update user's account data
+            $result = BillingDetails::insert_details($db, $agreement, $token, $user_logged_in);
+
+            $result = $result && $user->set_is_subscribed(1);
+
+            if($result) {
+                $subscription_message = "<div class='alertSuccess'>You're all signed up!</div>";
+            }
 
         } catch (PayPal\Exception\PayPalConnectionException $ex) {
             echo $ex->getCode();
@@ -68,7 +78,7 @@
             die($ex);
         }
     } else if (isset($_GET['success']) && $_GET['success'] == 'false') {
-        // Give error message
+        $subscription_message = "<div class='alertError'>User cancelled or something went wrong</div>";
     }
 ?>
 
@@ -102,11 +112,16 @@
         </form>
     </div>
 
-    <div class="formSection">
+    <div id="subscription" class="formSection">
             <h2>Subscription</h2>
+
+            <div class="message">
+                <?=$subscription_message?>
+            </div>
+
             <?php
                 if($user->get_is_subscribed()) {
-                    echo "<h3>You are subscribed! Go to PayPal to cancel.</h3>";
+                    echo "<h3>You are subscribed! Go to <a href='https://www.paypal.com/us/signin'>Paypal</a> to cancel.</h3>";
                 }
                 else {
                     echo "<a href='billing.php'>Subscribe to Tsudoflix</a>";

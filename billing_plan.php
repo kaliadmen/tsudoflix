@@ -22,7 +22,7 @@ $paymentDefinition->setName('Regular Payments')
                   ->setType('REGULAR')
                   ->setFrequency('Month')
                   ->setFrequencyInterval('1')
-                  ->setAmount(new Currency(array('value' => 1599, 'currency' => 'USD')));
+                  ->setAmount(new Currency(array('value' => 15.99, 'currency' => 'USD')));
 
 $current_url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 $return_url = str_replace("billing.php", "profile.php", $current_url);
@@ -30,10 +30,11 @@ $return_url = str_replace("billing.php", "profile.php", $current_url);
 // Set merchant preferences
 $merchantPreferences = new MerchantPreferences();
 $merchantPreferences->setReturnUrl($return_url."?success=true")
-                    ->setCancelUrl($return_url."?succes=false")
+                    ->setCancelUrl($return_url."?success=false")
                     ->setAutoBillAmount('yes')
                     ->setInitialFailAmountAction('CONTINUE')
-                    ->setMaxFailAttempts('0');
+                    ->setMaxFailAttempts('0')
+                    ->setSetupFee(new Currency(array('value' => 15.99, 'currency' => 'USD')));
 
 $plan->setPaymentDefinitions(array($paymentDefinition));
 $plan->setMerchantPreferences($merchantPreferences);

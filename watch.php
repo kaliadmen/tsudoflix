@@ -6,6 +6,12 @@
         ErrorMessage::show_error("No Id Passed In");
     }
 
+    $user = new User($db, $user_logged_in);
+
+    if(!$user->get_is_subscribed()) {
+        ErrorMessage::show_error("You must be subscribed to see this. <a href='profile.php#subscription'>Click here to subscribe</a>");
+    }
+
     $id = $_GET["id"];
 
     $video = new Video($db, $id);

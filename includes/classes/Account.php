@@ -196,7 +196,7 @@
 
             $query = $this->_connection->prepare(
                 "INSERT INTO users (username, password, email, last_name, first_name)
-                          VALUES (:fname, :lname, :uname, :eaddress, :pw)");
+                          VALUES (:uname, :pw, :eaddress, :lname, :fname)");
 
             $query->bindValue(":uname", $username);
             $query->bindValue(":pw", $hashed_password);

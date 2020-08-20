@@ -12,7 +12,7 @@ body {
 }
 
 .wrapper {
-    min-width: 1050px;
+    min-width: 320px;
     min-height: 100%;
     background-color: #141414;
 }
@@ -280,6 +280,7 @@ button i {
     flex-direction: column;
     padding: 10px 0;
 }
+
 .previewCategories {
     padding: 0 50px;
 }
@@ -537,4 +538,123 @@ input::placeholder {
     padding: 0;
     color: #fff;
     font-size: 20px;
+}
+
+@media screen and (max-width: 480px) {
+
+    .wrapper {
+        max-width: 480px;
+    }
+
+    /*Nav Bar*/
+    .topBar {
+
+        padding: 0 20px;
+        height: 50px;
+        min-width: 320px;
+    }
+
+    .logoContainer {
+        height: 20px;
+    }
+
+    .navLinks a {
+        color: #fff;
+        font-size: 14px;
+        margin-left: 10px;
+    }
+
+    .rightItems {
+        text-align: right;
+        flex: 1;
+    }
+
+    .rightItems i {
+        color: #fff;
+        font-size: 15px;
+        margin-left: 7px;
+    }
+
+    /*Video Preview*/
+    .previewContainer.small {
+        width: 130px;
+        height: 75px;
+        margin-right: 4px;
+        display: inline-flex;
+    }
+
+    .previewContainer.small img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .previewImage{
+        height: 32vh;
+    }
+
+    .previewOverlay .mainDetails {
+        position: relative;
+        top: 35%;
+        margin-left: 3.125rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .previewOverlay .mainDetails h3 {
+        color: #fff;
+        font-size: 1rem;
+        margin: 0.5rem 0;
+    }
+
+    .previewOverlay .mainDetails h4 {
+        color: #fff;
+        font-size: .75rem;
+        margin: 0.5rem 0;
+    }
+
+    .mainDetails button {
+        background-color: rgba(51,51,51,0.45);
+        color: #fff;
+        border: none;
+        min-width: 4.375rem;
+        padding: 0 2.375rem;
+        height: 2.125rem;
+        max-height: 3.125rem;
+        font-size: 1.125rem;
+        border: 3px;
+        margin-bottom: 0.9375rem;
+        margin-right: 5px;
+    }
+
+    .mainDetails button:hover {
+        background-color: #e6e6e6;
+        color: #000;
+        cursor: pointer;
+    }
+
+    button i {
+        color: inherit;
+    }
+
+    .category {
+        display: flex;
+        flex-direction: column;
+        padding: 10px 0;
+    }
+
+    .previewCategories {
+        padding: 0 30px;
+    }
+
+    .previewCategories.noScroll .entities{
+        white-space: normal;
+    }
+
+    .entities, .videos {
+        overflow-y: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+    }
+
 }

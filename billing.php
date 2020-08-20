@@ -12,8 +12,8 @@ use PayPal\Api\ShippingAddress;
 // Create new agreement
 $agreement = new Agreement();
 $agreement->setName('Tsudoflix Agreement')
-          ->setDescription('Recurring payments of 15.99 to Tsudoflix')
-          ->setStartDate(gmdate("Y-m-d\TH:i:s\Z", strtotime("+30 days", time())));
+          ->setDescription('$15.99 setup fee and then recurring payments of 15.99 to Tsudoflix')
+          ->setStartDate(gmdate("Y-m-d\TH:i:s\Z", strtotime("+1 month", time())));
 
 // Set plan id
 $plan = new Plan();
